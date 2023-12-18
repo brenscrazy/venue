@@ -1,0 +1,27 @@
+/*C12*/SET SCHEMA PUBLIC
+SET SCHEMA "PUBLIC"
+drop table if exists image cascade 
+drop table if exists post cascade 
+drop table if exists users cascade 
+create table image (id binary(16) not null, image_path varchar(255) not null, primary key (id))
+create table post (author_id binary(16), id binary(16) not null, image_id binary(16) unique, header varchar(255), post_text varchar(255), primary key (id))
+create table users (id binary(16) not null, email varchar(255) not null unique, password varchar(255) not null, role varchar(255) not null check (role in ('USER','ADMIN')), username varchar(255) not null unique, primary key (id))
+alter table post add constraint FK1mpebp1ayl0twrwm7ruiof778 foreign key (author_id) references users
+alter table post add constraint FKqbitxio9e3gwkkkhjhtntf16v foreign key (image_id) references image
+INSERT INTO USERS VALUES('a5ddfd792ba548ce958662d7a4392536','p@o.i','$2a$10$eDWjCCvy79I0ao.cVnFTE.HYZ59CJ8/XIjFPT.DiDNcAjoWKcid2u','USER','brens')
+COMMIT
+INSERT INTO POST VALUES('a5ddfd792ba548ce958662d7a4392536','0e87e18b495041bd8acd4091bdd31d49',NULL,'ololo',NULL)
+COMMIT
+INSERT INTO POST VALUES('a5ddfd792ba548ce958662d7a4392536','845d80593c8445f1b8b971a9a17c2246',NULL,'ololo',NULL)
+COMMIT
+/*C15*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C12*/DISCONNECT
+/*C18*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C13*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C14*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C20*/SET SCHEMA PUBLIC
+DISCONNECT

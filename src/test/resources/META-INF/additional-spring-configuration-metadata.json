@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "application.security.jwt.secret-key",
+      "type": "java.lang.String",
+      "description": "A key that is used for JWT signing."
+    },
+    {
+      "name": "application.security.jwt.expiration-millis",
+      "type": "java.lang.Long",
+      "description": "A time before generated JWT key is expired."
+    },
+    {
+      "name": "application.user.email-regexp",
+      "type": "java.lang.String",
+      "description": "Description for application.user.email-regexp."
+    },
+    {
+      "name": "application.user.username-regexp",
+      "type": "java.lang.String",
+      "description": "Description for application.user.username-regexp."
+    }
+  ] }
