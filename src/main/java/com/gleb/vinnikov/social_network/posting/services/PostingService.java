@@ -10,10 +10,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PostingService {
 
-    private final PostRepo postRepo;
+    //private final PostRepo postRepo;
 
     public UUID makePost(PostingRequest postingRequest) {
-        postRepo
+        throw new RuntimeException();
     }
 
 }

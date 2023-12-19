@@ -25,25 +25,25 @@ public class PostingController {
 
 
     @PostMapping(value = "/make-post",
-    consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PostingResponse> makePost(
             Principal principal,
             @RequestParam("postInfo") PostingRequest postInfo) {
         return ResponseEntity.ok(new PostingResponse(UUID.randomUUID()));
     }
 
-    @GetMapping(
-            value = "/{postId}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PostDto> getPost(
-            Principal principal,
-            @PathVariable String postId) {
-        Optional<Post> post = postingService.getPost(UUID.fromString(postId));
-        return post.map(this::convertToDto).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    private PostDto convertToDto(Post post) {
-        return modelMapper.map(post, PostDto.class);
-    }
+//    @GetMapping(
+//            value = "/{postId}",
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<PostDto> getPost(
+//            Principal principal,
+//            @PathVariable String postId) {
+//        Optional<Post> post = postingService.getPost(UUID.fromString(postId));
+//        return post.map(this::convertToDto).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+//    }
+//
+//    private PostDto convertToDto(Post post) {
+//        return modelMapper.map(post, PostDto.class);
+//    }
 
 }

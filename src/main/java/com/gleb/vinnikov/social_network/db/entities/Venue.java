@@ -9,17 +9,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter @Setter
-public class File {
+@Getter
+@Setter
+public class Venue {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private UUID id;
-    @Column(nullable = false)
-    private String path;
+
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User uploadedBy;
+    @JoinColumn(name = "creator_id")
+    private User createdBy;
+
+    @Column(nullable = false)
+    private String name;
 
 }

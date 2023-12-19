@@ -12,9 +12,16 @@ create table users (
 create table file (
   id uuid not null,
   user_id uuid not null,
-  file_path varchar(255) not null,
+  path varchar(255) not null,
   constraint file_pk primary key (id),
   constraint uploaded_by_fk foreign key (user_id) references users
+);
+
+create table venue (
+  id uuid not null,
+  creator_id uuid not null,
+  name varchar(255) not null,
+  constraint venue_pk primary key (id)
 );
 
 --create table post (

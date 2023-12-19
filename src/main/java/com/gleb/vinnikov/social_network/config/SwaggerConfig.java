@@ -18,9 +18,10 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
         return new OpenAPI().addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
-                .info(new Info().title("Social Network API")
-                        .description("This API provides functionality of a simple social network.")
-                        .version("1.0").contact(new Contact().name("Vinnikov GLeb").email( "glebmanufa@gmail.com")));
+                .info(new Info().title("Venue API")
+                        .description("This is API for Venue application.")
+                        .version("1.0").contact(new Contact().name("Vinnikov GLeb").email( "glebmanufa@gmail.com")
+                                .url("https:/t.me/brenscrazy")));
     }
 
     private SecurityScheme createAPIKeyScheme() {

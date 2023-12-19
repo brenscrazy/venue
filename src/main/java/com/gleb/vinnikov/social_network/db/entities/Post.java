@@ -10,7 +10,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter @Setter
+@Getter
+@Setter
 public class Post {
 
     @Id
@@ -18,10 +19,10 @@ public class Post {
     @Column(nullable = false)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "authorId")
-    @Column(nullable = false)
-    private User author;
+//    @ManyToOne
+//    @JoinColumn(name = "authorId")
+//    @Column(nullable = false)
+//    private User author;
 
     private String header;
 
