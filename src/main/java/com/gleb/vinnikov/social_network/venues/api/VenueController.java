@@ -42,6 +42,13 @@ public class VenueController {
         return ResponseEntity.ok(venueService.getByDisplayName(displayName));
     }
 
+    @GetMapping(value = "/venue-by-display-name-prefix")
+    public ResponseEntity<List<VenueResponse>> getByDisplayNamePrefix(
+            Principal principal,
+            @RequestParam String displayName) {
+        return ResponseEntity.ok(venueService.getByNamePrefix(displayName));
+    }
+
     @PostMapping(value = "/add-venue",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

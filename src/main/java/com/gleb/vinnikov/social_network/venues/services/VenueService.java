@@ -35,6 +35,11 @@ public class VenueService {
         return venue.stream().map(this::venueToVenueResponse).collect(Collectors.toList());
     }
 
+    public List<VenueResponse> getByNamePrefix(String name) {
+        List<Venue> venue = venueRepo.findAllByDisplayNameOrIdNameStartingWithOrderByDisplayName(name, name);
+        return venue.stream().map(this::venueToVenueResponse).collect(Collectors.toList());
+    }
+
     public VenueResponse addVenue(VenueCreationData venueCreationData, User user) {
         Venue venue = Venue.builder()
                 .idName(venueCreationData.getIdName())

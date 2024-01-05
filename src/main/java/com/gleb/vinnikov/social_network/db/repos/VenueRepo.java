@@ -11,5 +11,6 @@ public interface VenueRepo extends JpaRepository<Venue, UUID> {
 
     Optional<Venue> findByIdName(String idName);
     List<Venue> findAllByDisplayName(String displayName);
+    List<Venue> findAllByDisplayNameOrIdNameStartingWithOrderByDisplayName(String displayName, String idName);
 
 }
