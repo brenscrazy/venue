@@ -1,8 +1,7 @@
 package com.gleb.vinnikov.social_network.venues.api;
 
 import com.gleb.vinnikov.social_network.db.entities.User;
-import com.gleb.vinnikov.social_network.db.entities.Venue;
-import com.gleb.vinnikov.social_network.db.repos.VenueRepo;
+import com.gleb.vinnikov.social_network.venues.services.VenueService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -12,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,24 +19,36 @@ import java.util.UUID;
 @Validated
 public class VenueController {
 
-    private final VenueRepo venueRepo;
+    private final VenueService venueService;
 
-    @GetMapping(value = "/venue")
-    public ResponseEntity<Venue> getVenue(
+    @GetMapping(value = "/venue-by-id")
+    public ResponseEntity<VenueResponse> getById(
             Principal principal,
-            @RequestParam UUID uuid) {
-        return ResponseEntity.ok(venueRepo.getReferenceById(uuid));
+            @RequestParam UUID id) {
+        return ResponseEntity.ok(venueService.getById(id));
     }
 
-    @PostMapping(value = "/venue",
+    @GetMapping(value = "/venue-by-id-name")
+    public ResponseEntity<VenueResponse> getByIdName(
+            Principal principal,
+            @RequestParam String name) {
+        return ResponseEntity.ok(venueService.getByIdName(name));
+    }
+
+    @GetMapping(value = "/venue-by-display-name")
+    public ResponseEntity<List<VenueResponse>> getByDisplayName(
+            Principal principal,
+            @RequestParam String displayName) {
+        return ResponseEntity.ok(venueService.getByDisplayName(displayName));
+    }
+
+    @PostMapping(value = "/add-venue",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Venue> addVenue(
+    public ResponseEntity<VenueResponse> addVenue(
             Authentication principal,
             @Valid @RequestBody VenueCreationData venueCreationData) {
-        User user = (User) principal.getPrincipal();
-        Venue venue = Venue.builder().name(venueCreationData.getName()).createdBy(user).build();
-        return ResponseEntity.ok(venueRepo.save(venue));
+        return ResponseEntity.ok(venueService.addVenue(venueCreationData, (User) principal.getPrincipal()));
     }
 
 }

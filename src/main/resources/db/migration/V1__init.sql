@@ -19,9 +19,11 @@ create table file (
 
 create table venue (
   id uuid not null,
+  id_name varchar(255) unique not null,
+  display_name varchar(255) not null,
   creator_id uuid not null,
-  name varchar(255) not null,
-  constraint venue_pk primary key (id)
+  constraint venue_pk primary key (id),
+  constraint creator_id_fk foreign key (creator_id) references users
 );
 
 --create table post (

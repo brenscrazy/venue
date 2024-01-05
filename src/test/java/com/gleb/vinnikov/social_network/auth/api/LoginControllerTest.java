@@ -2,6 +2,7 @@ package com.gleb.vinnikov.social_network.auth.api;
 
 import com.gleb.vinnikov.social_network.auth.services.LoginService;
 import com.gleb.vinnikov.social_network.db.entities.Role;
+import com.gleb.vinnikov.social_network.utils.Utils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -107,19 +108,11 @@ public class LoginControllerTest {
     }
 
     private WebTestClient.ResponseSpec registration(RegistrationRequest request) {
-        return webTestClient.post().uri(registerPath)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(request), LoginResponse.class)
-                .exchange();
+        return Utils.performJsonHttpPostRequest(webTestClient, registerPath, request);
     }
 
     private WebTestClient.ResponseSpec login(LoginRequest request) {
-        return webTestClient.post().uri(loginPath)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(request), LoginResponse.class)
-                .exchange();
+        return Utils.performJsonHttpPostRequest(webTestClient, loginPath, request);
     }
 
 }
