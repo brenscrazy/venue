@@ -21,10 +21,18 @@ create table venue (
   id uuid not null,
   id_name varchar(255) unique not null,
   display_name varchar(255) not null,
-  creator_id uuid not null,
+  creator_username varchar(255) not null,
   constraint venue_pk primary key (id),
-  constraint creator_id_fk foreign key (creator_id) references users
+  constraint creator_username_fk foreign key (creator_username) references users(username)
 );
+
+create table user_venue_subscriptions(
+    user_id uuid not null,
+    venue_id uuid not null,
+    constraint user_fk foreign key (user_id) references users,
+    constraint venue_fk foreign key (venue_id) references venue,
+    constraint pair_pk primary key (user_id, venue_id)
+)
 
 --create table post (
 --  author_id uuid,

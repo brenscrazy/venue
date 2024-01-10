@@ -2,6 +2,7 @@ package com.gleb.vinnikov.social_network.venues.api;
 
 import com.gleb.vinnikov.social_network.db.entities.User;
 import com.gleb.vinnikov.social_network.venues.services.VenueService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Validated
+@Tag(name = "Venues", description = "Methods to add/get/update/delete venues")
 public class VenueController {
 
     private final VenueService venueService;
@@ -38,15 +40,15 @@ public class VenueController {
     @GetMapping(value = "/venue-by-display-name")
     public ResponseEntity<List<VenueResponse>> getByDisplayName(
             Principal principal,
-            @RequestParam String displayName) {
-        return ResponseEntity.ok(venueService.getByDisplayName(displayName));
+            @RequestParam String name) {
+        return ResponseEntity.ok(venueService.getByDisplayName(name));
     }
 
     @GetMapping(value = "/venue-by-display-name-prefix")
     public ResponseEntity<List<VenueResponse>> getByDisplayNamePrefix(
             Principal principal,
-            @RequestParam String displayName) {
-        return ResponseEntity.ok(venueService.getByNamePrefix(displayName));
+            @RequestParam(name = "name_prefix") String namePrefix) {
+        return ResponseEntity.ok(venueService.getByNamePrefix(namePrefix));
     }
 
     @PostMapping(value = "/add-venue",

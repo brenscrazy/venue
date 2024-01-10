@@ -1,6 +1,7 @@
 package com.gleb.vinnikov.social_network.auth.api;
 
 import com.gleb.vinnikov.social_network.auth.services.LoginService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Validated
+@Tag(name = "Authorization", description = "Methods for authorization and registration")
 public class LoginController {
 
     private final LoginService loginService;

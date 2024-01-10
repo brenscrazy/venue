@@ -31,19 +31,19 @@ public class VenueService {
     }
 
     public List<VenueResponse> getByDisplayName(String displayName) {
-        List<Venue> venue = venueRepo.findAllByDisplayName(displayName);
-        return venue.stream().map(this::venueToVenueResponse).collect(Collectors.toList());
+        List<Venue> venue = venueRepo.findAllByDisplayNameOrderByIdName(displayName);
+        return venue.stream().map(VenueService::venueToVenueResponse).collect(Collectors.toList());
     }
 
     public List<VenueResponse> getByNamePrefix(String name) {
-        List<Venue> venue = venueRepo.findAllByDisplayNameOrIdNameStartingWithOrderByDisplayName(name, name);
-        return venue.stream().map(this::venueToVenueResponse).collect(Collectors.toList());
+        List<Venue> venue = venueRepo.findAllByDisplayNameStartingWithOrIdNameStartingWithOrderByDisplayNameAscIdNameAsc(name, name);
+        return venue.stream().map(VenueService::venueToVenueResponse).collect(Collectors.toList());
     }
 
     public VenueResponse addVenue(VenueCreationData venueCreationData, User user) {
         Venue venue = Venue.builder()
                 .idName(venueCreationData.getIdName())
-                .createdBy(user)
+                .creatorUsername(user.getUsername())
                 .displayName(venueCreationData.getDisplayName()).build();
         return venueToVenueResponse(venueRepo.save(venue));
     }
@@ -52,10 +52,10 @@ public class VenueService {
         return venueResponseOptional.orElseThrow(() -> new NoSuchElementException("no such venue"));
     }
 
-    private VenueResponse venueToVenueResponse(Venue venue) {
+    public static VenueResponse venueToVenueResponse(Venue venue) {
         return new VenueResponse(
                 venue.getId(),
-                venue.getCreatedBy().getUsername(),
+                venue.getCreatorUsername(),
                 venue.getIdName(),
                 venue.getDisplayName()
         );

@@ -66,4 +66,10 @@ public class User implements UserDetails {
         return true;
     }
 
+    public interface UserUsernameOnly {
+
+        String getUsername();
+
+    }
+
 }

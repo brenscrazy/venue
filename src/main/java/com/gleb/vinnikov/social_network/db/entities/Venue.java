@@ -20,14 +20,19 @@ public class Venue {
     @Column(nullable = false)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "creator_id")
-    private User createdBy;
+    @Column(nullable = false)
+    private String creatorUsername;
 
     @Column(nullable = false, unique = true)
     private String idName;
 
     @Column(nullable = false)
     private String displayName;
+
+    public interface VenueIdOnly {
+
+        public UUID getId();
+
+    }
 
 }

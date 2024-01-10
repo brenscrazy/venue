@@ -108,11 +108,11 @@ public class LoginControllerTest {
     }
 
     private WebTestClient.ResponseSpec registration(RegistrationRequest request) {
-        return Utils.performJsonHttpPostRequest(webTestClient, registerPath, request);
+        return Utils.performJsonHttpPostRequestNoToken(webTestClient, registerPath, request);
     }
 
     private WebTestClient.ResponseSpec login(LoginRequest request) {
-        return Utils.performJsonHttpPostRequest(webTestClient, loginPath, request);
+        return Utils.performJsonHttpPostRequestNoToken(webTestClient, loginPath, request);
     }
 
 }

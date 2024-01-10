@@ -28,4 +28,18 @@ public class Utils {
                 .exchange();
     }
 
+    public static <T> WebTestClient.ResponseSpec performJsonHttpPostRequestNoToken(WebTestClient webTestClient,
+                                                                                   String path,
+                                                                                   T request) {
+        return webTestClient.post().uri(path)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(request), LoginResponse.class)
+                .exchange();
+    }
+
+    public static String buildPath(int port, String endpointName) {
+        return Constants.LOCALHOST + port + "/" + endpointName;
+    }
+
 }
