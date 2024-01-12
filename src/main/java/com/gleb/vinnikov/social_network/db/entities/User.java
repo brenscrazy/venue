@@ -66,7 +66,9 @@ public class User implements UserDetails {
         return true;
     }
 
-    public interface UserUsernameOnly {
+    public interface UserIdUsernameOnly {
+
+        UUID getId();
 
         String getUsername();
 

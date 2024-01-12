@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -59,9 +56,9 @@ public class SubscriptionController {
     )
     public ResponseEntity<List<UserResponse>> getVenueSubscribers(
             Authentication principal,
-            UUID venueId
+            @RequestParam UUID venueId
     ) {
-        return ResponseEntity.ok(subscriptionService.getVenueSubscribers(venueId));
+        return ResponseEntity.ok(subscriptionService.getVenueSubscribersByVenueId(venueId));
     }
 
 

@@ -1,20 +1,14 @@
 package com.gleb.vinnikov.social_network.venues.api;
 
 import com.gleb.vinnikov.social_network.auth.jwt.JwtService;
-import com.gleb.vinnikov.social_network.auth.services.LoginService;
 import com.gleb.vinnikov.social_network.db.entities.Role;
 import com.gleb.vinnikov.social_network.db.entities.User;
-import com.gleb.vinnikov.social_network.db.entities.Venue;
-import com.gleb.vinnikov.social_network.utils.Constants;
 import com.gleb.vinnikov.social_network.utils.Utils;
 import com.gleb.vinnikov.social_network.venues.services.VenueService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,14 +17,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.Duration;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

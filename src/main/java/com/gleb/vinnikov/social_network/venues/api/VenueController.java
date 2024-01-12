@@ -25,28 +25,28 @@ public class VenueController {
 
     @GetMapping(value = "/venue-by-id")
     public ResponseEntity<VenueResponse> getById(
-            Principal principal,
+            Authentication principal,
             @RequestParam UUID id) {
         return ResponseEntity.ok(venueService.getById(id));
     }
 
     @GetMapping(value = "/venue-by-id-name")
     public ResponseEntity<VenueResponse> getByIdName(
-            Principal principal,
+            Authentication principal,
             @RequestParam String name) {
         return ResponseEntity.ok(venueService.getByIdName(name));
     }
 
     @GetMapping(value = "/venue-by-display-name")
     public ResponseEntity<List<VenueResponse>> getByDisplayName(
-            Principal principal,
+            Authentication principal,
             @RequestParam String name) {
         return ResponseEntity.ok(venueService.getByDisplayName(name));
     }
 
     @GetMapping(value = "/venue-by-display-name-prefix")
     public ResponseEntity<List<VenueResponse>> getByDisplayNamePrefix(
-            Principal principal,
+            Authentication principal,
             @RequestParam(name = "name_prefix") String namePrefix) {
         return ResponseEntity.ok(venueService.getByNamePrefix(namePrefix));
     }

@@ -16,20 +16,20 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class ErrorHandlingControllerAdvice {
 
-    @ExceptionHandler({IllegalArgumentException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorResponse> handleConstraintViolation(IllegalArgumentException ex) {
-        return ResponseEntity.badRequest().body(new ErrorResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorResponse> handleMissingParams(MethodArgumentNotValidException ex) {
-        for (ObjectError error : ex.getAllErrors()) {
-            return ResponseEntity.badRequest().body(new ErrorResponse(error.getDefaultMessage()));
-        }
-        return null;
-    }
+//    @ExceptionHandler({IllegalArgumentException.class})
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ResponseEntity<ErrorResponse> handleConstraintViolation(IllegalArgumentException ex) {
+//        return ResponseEntity.badRequest().body(new ErrorResponse(ex.getMessage()));
+//    }
+//
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ResponseEntity<ErrorResponse> handleMissingParams(MethodArgumentNotValidException ex) {
+//        for (ObjectError error : ex.getAllErrors()) {
+//            return ResponseEntity.badRequest().body(new ErrorResponse(error.getDefaultMessage()));
+//        }
+//        return null;
+//    }
 
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

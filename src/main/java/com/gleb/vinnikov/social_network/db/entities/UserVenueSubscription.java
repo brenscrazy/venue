@@ -15,36 +15,41 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserVenueSubscription<UserT, VenueT> {
+public class UserVenueSubscription {
 
-    @EmbeddedId
-    private UserVenueIds ids;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
+    private UUID id;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "venue_id")
+    private Venue venue;
 
-    public UserVenueSubscription(UserT user, VenueT venue) {
-        ids = new UserVenueIds(user, venue);
+    public UserVenueSubscription(User user, Venue venue) {
+        this.setUser(user);
+        this.setVenue(venue);
     }
 
-    public UserVenueSubscription(UserT user) {
-        ids = UserVenueIds.builder().user(user).build();
+    public UserVenueSubscription(UUID userId, UUID venueId) {
+        this(User.builder().id(userId).build(), Venue.builder().id(venueId).build());
     }
 
-    public VenueT getVenue() {
-        return ids.getVenue();
-    };
+    public UserVenueSubscription(User user) {
+        this.setUser(user);
+    }
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    @Embeddable
-    public class UserVenueIds implements Serializable {
+    public interface SubscriptionVenueOnly{
 
-        @ManyToOne
-        @JoinColumn(name = "user_id")
-        private UserT user;
-        @ManyToOne
-        @JoinColumn(name = "venue_id")
-        private VenueT venue;
+       public Venue getVenue();
+
+    }
+
+    public interface SubscriptionUserOnly{
+
+        public User.UserIdUsernameOnly getUser();
 
     }
 
