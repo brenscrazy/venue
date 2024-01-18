@@ -2,12 +2,14 @@ package com.gleb.vinnikov.venue.venues.services.impl;
 
 import com.gleb.vinnikov.venue.db.entities.User;
 import com.gleb.vinnikov.venue.db.entities.Venue;
+import com.gleb.vinnikov.venue.db.repos.UserRepo;
 import com.gleb.vinnikov.venue.db.repos.VenueRepo;
 import com.gleb.vinnikov.venue.venues.api.VenueCreationData;
 import com.gleb.vinnikov.venue.venues.api.VenueResponse;
 import com.gleb.vinnikov.venue.venues.services.VenueService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class VenueServiceImpl implements VenueService {
 
     private final VenueRepo venueRepo;
+    private final UserRepo userRepo;
 
     @Override
     public VenueResponse getById(@NonNull UUID id) {
@@ -51,9 +54,13 @@ public class VenueServiceImpl implements VenueService {
     public VenueResponse addVenue(@NonNull VenueCreationData venueCreationData, @NonNull User user) {
         Venue venue = Venue.builder()
                 .idName(venueCreationData.getIdName())
-                .creatorUsername(user.getUsername())
+                .creator(user)
                 .displayName(venueCreationData.getDisplayName()).build();
-        return venueToVenueResponse(venueRepo.save(venue));
+        try {
+            return venueToVenueResponse(venueRepo.save(venue));
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("Venue id name is taken");
+        }
     }
 
     private Venue handleOptional(Optional<Venue> venueResponseOptional) {

@@ -14,6 +14,7 @@ import static io.netty.handler.codec.http.HttpHeaderNames.AUTHORIZATION;
 
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
+
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -25,4 +26,5 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
                 "}");
 
     }
+
 }

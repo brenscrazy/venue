@@ -19,8 +19,9 @@ public class Venue {
     @Column(nullable = false)
     private UUID id;
 
-    @Column(nullable = false)
-    private String creatorUsername;
+    @ManyToOne
+    @JoinColumn(name = "creator_id", nullable = false, referencedColumnName = "id")
+    private User creator;
 
     @Column(nullable = false, unique = true)
     private String idName;
@@ -32,6 +33,10 @@ public class Venue {
 
         public UUID getId();
 
+    }
+
+    public String getCreatorUsername() {
+        return creator.getUsername();
     }
 
 }

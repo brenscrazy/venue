@@ -4,6 +4,7 @@ import com.gleb.vinnikov.venue.db.entities.User;
 import com.gleb.vinnikov.venue.subscriptions.services.SubscriptionService;
 import com.gleb.vinnikov.venue.utils.Message;
 import com.gleb.vinnikov.venue.venues.api.VenueResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,13 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
+    @Operation(
+            summary = "Подписаться на заведение по его id.",
+            description = "Принимает id заведения.\nВ случае, если данный id соответствует зарегистрированному в " +
+                    "системе заведению, то оформляется подписка пользователя, которому принадлежит нынешний JWT " +
+                    "токен на данное заведение или возвращается сообщение о том, что данный пользователь уже подписан " +
+                    "на это заведение."
+    )
     @PostMapping(
             value="subscribe-to-venue"
     )
@@ -32,6 +40,13 @@ public class SubscriptionController {
                 request.getVenueId()));
     }
 
+    @Operation(
+            summary = "Отписаться от заведения по его id.",
+            description = "Принимает id заведения.\nВ случае, если данный id соответствует зарегистрированному в " +
+                    "системе заведению, то подписка пользователя, которому принадлежит нынешний JWT " +
+                    "токен, на данное заведение отменяется. Или возвращается сообщение о том, что данный пользователь " +
+                    "в данный момент не подписан на это заведение."
+    )
     @PostMapping(
             value="unsubscribe-from-venue"
     )
@@ -43,6 +58,13 @@ public class SubscriptionController {
                 request.getVenueId()));
     }
 
+    @Operation(
+            summary = "Подписаться на заведение по его idName.",
+            description = "Принимает idName заведения.\nВ случае, если данный idName соответствует зарегистрированному в " +
+                    "системе заведению, то оформляется подписка пользователя, которому принадлежит нынешний JWT " +
+                    "токен на данное заведение или возвращается сообщение о том, что данный пользователь уже подписан " +
+                    "на это заведение."
+    )
     @PostMapping(
             value="subscribe-to-venue-by-id-name"
     )
@@ -54,6 +76,13 @@ public class SubscriptionController {
                 request.getVenueIdName()));
     }
 
+    @Operation(
+            summary = "Отписаться от заведения по его idName.",
+            description = "Принимает idName заведения.\nВ случае, если данный Name соответствует зарегистрированному в " +
+                    "системе заведению, то подписка пользователя, которому принадлежит нынешний JWT " +
+                    "токен, на данное заведение отменяется. Или возвращается сообщение о том, что данный пользователь " +
+                    "в данный момент не подписан на это заведение."
+    )
     @PostMapping(
             value="unsubscribe-from-venue-by-id-name"
     )
@@ -65,6 +94,10 @@ public class SubscriptionController {
                 request.getVenueIdName()));
     }
 
+    @Operation(
+            summary = "Получить информацию о заведениях, на которые подписан авторизованный пользователь.",
+            description = "Возвращает список заведений, на которые подписан пользователь, с нынешним JWT токеном"
+    )
     @GetMapping(
             value="get-my-subscriptions"
     )
@@ -74,6 +107,10 @@ public class SubscriptionController {
         return ResponseEntity.ok(subscriptionService.getUsersSubscriptionVenues(principal));
     }
 
+    @Operation(
+            summary = "Получить список пользователей, подписанных на заведение, по его id",
+            description = "Возвращает список пользователей, которые подписаны на заведение с переданным id."
+    )
     @GetMapping(
             value="get-venue-subscribers-by-id"
     )
@@ -84,6 +121,10 @@ public class SubscriptionController {
         return ResponseEntity.ok(subscriptionService.getVenueSubscribersByVenueId(venueId));
     }
 
+    @Operation(
+            summary = "Получить список пользователей, подписанных на заведение, по его idName",
+            description = "Возвращает список пользователей, которые подписаны на заведение с переданным idName."
+    )
     @GetMapping(
             value="get-venue-subscribers-by-id-name"
     )
