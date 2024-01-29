@@ -24,7 +24,7 @@
 - [Docker](https://www.docker.com/)
 - Maven
 ## Документация API
-- [Документация в формате HTML](index.html)
+- [Документация в формате HTML](https://brenscrazy.github.io/venue/)
 - [OpenAPI документация в формате JSON](docs.json)
 ## Инструкция к запуску
 ### Через Docker
