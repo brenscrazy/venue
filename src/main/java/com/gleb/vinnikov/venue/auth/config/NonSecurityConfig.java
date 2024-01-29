@@ -19,20 +19,6 @@ import java.util.regex.Pattern;
 public class NonSecurityConfig {
 
     private final UserDetailsService userDetailsService;
-    @Value("${application.user.email-regexp}")
-    private String emailRegexp;
-    @Value("${application.user.username-regexp}")
-    private String usernameRegexp;
-
-    @Bean
-    public Pattern emailPattern() {
-        return Pattern.compile(emailRegexp);
-    }
-
-    @Bean
-    public Pattern usernamePattern() {
-        return Pattern.compile(usernameRegexp);
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class VenueServiceImpl implements VenueService {
 
     private final VenueRepo venueRepo;
-    private final UserRepo userRepo;
 
     @Override
     public VenueResponse getById(@NonNull UUID id) {

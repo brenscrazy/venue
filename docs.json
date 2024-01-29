@@ -1,0 +1,1287 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Venue API",
+    "description": "This is API for Venue application.",
+    "contact": {
+      "name": "Vinnikov GLeb",
+      "url": "https:/t.me/brenscrazy",
+      "email": "glebmanufa@gmail.com"
+    },
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "security": [
+    {
+      "Bearer Authentication": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authorization",
+      "description": "Методы для аутентификации и регистрации."
+    },
+    {
+      "name": "Subscriptions",
+      "description": "Методы для работы с подписками пользователей на заведения"
+    },
+    {
+      "name": "Venues",
+      "description": "Методы для работы с заведениями."
+    },
+    {
+      "name": "Events",
+      "description": "Методы для работы с событиями."
+    },
+    {
+      "name": "Users",
+      "description": "Методы для работы с пользователями"
+    }
+  ],
+  "paths": {
+    "/unsubscribe-from-venue": {
+      "post": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Отписаться от заведения по его id.",
+        "description": "Принимает id заведения.\nВ случае, если данный id соответствует зарегистрированному в системе заведению, то подписка пользователя, которому принадлежит нынешний JWT токен, на данное заведение отменяется. Или возвращается сообщение о том, что данный пользователь в данный момент не подписан на это заведение.",
+        "operationId": "unsubscribeFromVenue",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionRequestById"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/unsubscribe-from-venue-by-id-name": {
+      "post": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Отписаться от заведения по его idName.",
+        "description": "Принимает idName заведения.\nВ случае, если данный Name соответствует зарегистрированному в системе заведению, то подписка пользователя, которому принадлежит нынешний JWT токен, на данное заведение отменяется. Или возвращается сообщение о том, что данный пользователь в данный момент не подписан на это заведение.",
+        "operationId": "unsubscribeFromVenueByIdName",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionRequestByIdName"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscribe-to-venue": {
+      "post": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Подписаться на заведение по его id.",
+        "description": "Принимает id заведения.\nВ случае, если данный id соответствует зарегистрированному в системе заведению, то оформляется подписка пользователя, которому принадлежит нынешний JWT токен на данное заведение или возвращается сообщение о том, что данный пользователь уже подписан на это заведение.",
+        "operationId": "subscribeToVenue",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionRequestById"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscribe-to-venue-by-id-name": {
+      "post": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Подписаться на заведение по его idName.",
+        "description": "Принимает idName заведения.\nВ случае, если данный idName соответствует зарегистрированному в системе заведению, то оформляется подписка пользователя, которому принадлежит нынешний JWT токен на данное заведение или возвращается сообщение о том, что данный пользователь уже подписан на это заведение.",
+        "operationId": "subscribeToVenueByIdName",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionRequestByIdName"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/registration": {
+      "post": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Зарегистрировать нового пользователя.",
+        "description": "Принимает необходимую информацию и регистрирует нового пользователя в сервисе. Если переданная информация корректна, то возвращает JWT токен, который необходимо передать в заголовок Authorization для доступа к другим API методам.",
+        "operationId": "registration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Войти в сервис.",
+        "description": "Принимает имя пользователя и пароль зарегистрированного пользователя. Если переданная информация корректна, то возвращает JWT токен, который необходимо передать в заголовок Authorization для доступа к другим API методам.",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-events": {
+      "post": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Получить список событий.",
+        "description": "Получить события в системе. Если указан параметр venueIdName, то возвращаются только события в указанном заведении. Если указан параметр before, то возвращаются только события до указанной даты. Если указан параметр after, то возвращаются только события после указанной даты.",
+        "operationId": "getEvents",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetEventRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-event": {
+      "post": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Создать событие",
+        "description": "Принимает заведение, дату и название события. В случае, если переданная информация корректна, создает новое событие и возвращает его.",
+        "operationId": "createEvent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/change-my-info": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Изменить информацию авторизованного пользователя.",
+        "description": "Обновляет переданные поля пользователя. В случае изменения username текущий JWT токен становится недействителен.",
+        "operationId": "updateUserInfo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeUserInfoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponsePrivate"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/add-venue": {
+      "post": {
+        "tags": [
+          "Venues"
+        ],
+        "summary": "Добавить новое заведение.",
+        "description": "Принимает информацию о новом заведении и регистрирует его в системе.\nПереданный параметр idName должен быть уникальным среди уже зарегистрированных заведений.\nВозвращает информацию о зарегистрированном заведении, если переданная информация корректна.",
+        "operationId": "addVenue",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VenueCreationData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VenueResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/venue-by-id": {
+      "get": {
+        "tags": [
+          "Venues"
+        ],
+        "summary": "Получить данные о заведении по его id.",
+        "description": "Принимает id зведения.\nВ случае, если данный id соответствует зарегистрированному в системе заведению, то возвращает информацию о нем.",
+        "operationId": "getById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VenueResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/venue-by-id-name": {
+      "get": {
+        "tags": [
+          "Venues"
+        ],
+        "summary": "Получить данные о заведении по его idName.",
+        "description": "Принимает idName зведения.\nВ случае, если данный idName соответствует зарегистрированному в системе заведению, то возвращает информацию о нем.",
+        "operationId": "getByIdName",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VenueResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/venue-by-display-name": {
+      "get": {
+        "tags": [
+          "Venues"
+        ],
+        "summary": "Получить данные о заведениях по displayName.",
+        "description": "Принимает displayName зведения.\nВозвращает все заведения с переданным displayName.",
+        "operationId": "getByDisplayName",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VenueResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/venue-by-display-name-prefix": {
+      "get": {
+        "tags": [
+          "Venues"
+        ],
+        "summary": "Получить данные о заведениях по префиксу названия",
+        "description": "Принимает префикс названия.\nВозвращает все заведения, у которых idName или displayName имеют переданный префикс.",
+        "operationId": "getByDisplayNamePrefix",
+        "parameters": [
+          {
+            "name": "name_prefix",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VenueResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-venue-subscribers-by-id": {
+      "get": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Получить список пользователей, подписанных на заведение, по его id",
+        "description": "Возвращает список пользователей, которые подписаны на заведение с переданным id.",
+        "operationId": "getVenueSubscribersById",
+        "parameters": [
+          {
+            "name": "venueId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponsePublic"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-venue-subscribers-by-id-name": {
+      "get": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Получить список пользователей, подписанных на заведение, по его idName",
+        "description": "Возвращает список пользователей, которые подписаны на заведение с переданным idName.",
+        "operationId": "getVenueSubscribersByIdName",
+        "parameters": [
+          {
+            "name": "venueIdName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponsePublic"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-user-by-username": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Получить информацию о пользователе по его username.",
+        "description": "Возвращает общедоступную информацию о пользователе с переданным username.",
+        "operationId": "getUserByUsername",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponsePublic"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-my-subscriptions": {
+      "get": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Получить информацию о заведениях, на которые подписан авторизованный пользователь.",
+        "description": "Возвращает список заведений, на которые подписан пользователь, с нынешним JWT токеном",
+        "operationId": "getAuthenticatedUsersSubscriptions",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VenueResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-event": {
+      "get": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Получить событие",
+        "description": "По id события возвращает информацию о нем.",
+        "operationId": "getEvent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errorMessage": {
+            "type": "string"
+          }
+        }
+      },
+      "SubscriptionRequestById": {
+        "type": "object",
+        "properties": {
+          "venueId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "SubscriptionRequestByIdName": {
+        "type": "object",
+        "properties": {
+          "venueIdName": {
+            "type": "string"
+          }
+        }
+      },
+      "RegistrationRequest": {
+        "required": [
+          "email",
+          "password",
+          "role",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "pattern": "^[A-Za-z][A-Za-z0-9_]{4,29}$",
+            "type": "string"
+          },
+          "email": {
+            "pattern": "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$",
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "ADMIN"
+            ]
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginRequest": {
+        "required": [
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "DateFields": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "month": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "day": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hour": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minute": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "GetEventRequest": {
+        "type": "object",
+        "properties": {
+          "venueIdName": {
+            "type": "string"
+          },
+          "after": {
+            "$ref": "#/components/schemas/DateFields"
+          },
+          "before": {
+            "$ref": "#/components/schemas/DateFields"
+          }
+        }
+      },
+      "EventResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "takesPlaceAt": {
+            "type": "string"
+          },
+          "date": {
+            "$ref": "#/components/schemas/DateFields"
+          }
+        }
+      },
+      "EventRequest": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string"
+          },
+          "venueIdName": {
+            "type": "string"
+          },
+          "date": {
+            "$ref": "#/components/schemas/DateFields"
+          }
+        }
+      },
+      "ChangeUserInfoRequest": {
+        "type": "object",
+        "properties": {
+          "newUsername": {
+            "pattern": "^[A-Za-z][A-Za-z0-9_]{4,29}$",
+            "type": "string"
+          },
+          "newEmail": {
+            "pattern": "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$",
+            "type": "string"
+          }
+        }
+      },
+      "UserResponsePrivate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "VenueCreationData": {
+        "required": [
+          "displayName",
+          "idName"
+        ],
+        "type": "object",
+        "properties": {
+          "idName": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          }
+        }
+      },
+      "VenueResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "idName": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          }
+        }
+      },
+      "UserResponsePublic": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer Authentication": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

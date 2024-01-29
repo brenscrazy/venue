@@ -17,9 +17,9 @@ public interface UserVenueSubscriptionsRepo extends JpaRepository<UserVenueSubsc
     boolean existsByUserIdAndVenueId(UUID userId, UUID venueId);
 
     @Query("select s from UserVenueSubscription s where s.venue.id = ?1")
-    List<UserVenueSubscription.SubscriptionUserOnly> findUsersByVenueId(UUID venueId);
+    List<UserVenueSubscription> findUsersByVenueId(UUID venueId);
 
     @Query("select s from UserVenueSubscription s where s.venue.idName = ?1")
-    List<UserVenueSubscription.SubscriptionUserOnly> findUsersByVenueIdName(String venueId);
+    List<UserVenueSubscription> findUsersByVenueIdName(String venueId);
 
 }

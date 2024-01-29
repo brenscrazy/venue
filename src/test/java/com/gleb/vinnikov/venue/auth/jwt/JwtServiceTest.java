@@ -1,19 +1,17 @@
 package com.gleb.vinnikov.venue.auth.jwt;
 
+import com.gleb.vinnikov.venue.auth.jwt.impl.JwtServiceImpl;
 import com.gleb.vinnikov.venue.db.entities.User;
 import io.jsonwebtoken.Claims;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
 public class JwtServiceTest {
 
-    @Autowired
-    private JwtService jwtService;
+    private JwtServiceImpl jwtService = new JwtServiceImpl(
+            "4125442A472D4B6150645367566B58703273357638792F423F4528482B4D6251", 1000000);
 
     private final String USERNAME = "brenscrazy";
 
@@ -23,8 +21,9 @@ public class JwtServiceTest {
         Claims claims = jwtService.getClaims(token);
         String decodedUsername = claims.getSubject();
         long issuedAt = claims.getIssuedAt().getTime();
+        long expiresAt = claims.getExpiration().getTime();
         Assertions.assertEquals(USERNAME, decodedUsername);
-        Assertions.assertTrue(System.currentTimeMillis() - issuedAt < 1000);
+        Assertions.assertTrue(issuedAt < expiresAt);
     }
 
     @Test

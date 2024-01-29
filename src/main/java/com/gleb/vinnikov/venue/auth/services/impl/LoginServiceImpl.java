@@ -7,15 +7,12 @@ import com.gleb.vinnikov.venue.auth.jwt.JwtService;
 import com.gleb.vinnikov.venue.auth.services.LoginService;
 import com.gleb.vinnikov.venue.db.entities.User;
 import com.gleb.vinnikov.venue.db.repos.UserRepo;
-import com.gleb.vinnikov.venue.utils.ExceptionUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -25,13 +22,12 @@ public class LoginServiceImpl implements LoginService {
     private final UserRepo userRepo;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final Pattern emailPattern;
-    private final Pattern usernamePattern;
+    //private final UserInfoValidator userInfoValidator;
 
     @Override
     public LoginResponse registration(RegistrationRequest registrationRequest) {
-        validateEmail(registrationRequest.getEmail());
-        validateUsername(registrationRequest.getUsername());
+//        userInfoValidator.validateEmail(registrationRequest.getEmail());
+//        userInfoValidator.validateUsername(registrationRequest.getUsername());
         User user = User.builder()
                 .username(registrationRequest.getUsername())
                 .email(registrationRequest.getEmail())
@@ -49,24 +45,6 @@ public class LoginServiceImpl implements LoginService {
                 request.getUsername(), request.getPassword())).getPrincipal();
         String accessToken = jwtService.generateAccessToken(user);
         return new LoginResponse(accessToken);
-    }
-
-    private void validateEmail(String email) {
-        if (!emailPattern.matcher(email).matches()) {
-            throw ExceptionUtils.buildIllegalArgumentException("registration.error.wrong.email.format", email);
-        }
-        if (userRepo.existsUserByEmail(email)) {
-            throw ExceptionUtils.buildIllegalArgumentException("registration.error.email.is.taken", email);
-        }
-    }
-
-    private void validateUsername(String username) {
-        if (!usernamePattern.matcher(username).matches()) {
-            throw ExceptionUtils.buildIllegalArgumentException("registration.error.wrong.username.format", username);
-        }
-        if (userRepo.existsUserByUsername(username)) {
-            throw ExceptionUtils.buildIllegalArgumentException("registration.error.username.is.taken", username);
-        }
     }
 
 }

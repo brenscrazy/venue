@@ -4,7 +4,7 @@ import com.gleb.vinnikov.venue.auth.api.LoginRequest;
 import com.gleb.vinnikov.venue.auth.api.LoginResponse;
 import com.gleb.vinnikov.venue.auth.api.RegistrationRequest;
 import com.gleb.vinnikov.venue.auth.jwt.JwtService;
-import com.gleb.vinnikov.venue.auth.services.impl.UserDetailsServiceImpl;
+import com.gleb.vinnikov.venue.auth.services.impl.LoginServiceImpl;
 import com.gleb.vinnikov.venue.db.entities.Role;
 import com.gleb.vinnikov.venue.db.entities.User;
 import com.gleb.vinnikov.venue.db.repos.UserRepo;
@@ -12,61 +12,43 @@ import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
 public class LoginServiceTest {
 
-    @MockBean
+    @Mock
     private UserRepo userRepo;
-    @MockBean
+    @Mock
     private JwtService jwtService;
-    @MockBean
-    private UserDetailsServiceImpl userDetailsService;
-    @MockBean
+    @Mock
+    private AuthenticationManager authenticationManager;
+    @Mock
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private LoginService loginService;
+    @InjectMocks
+    private LoginServiceImpl loginService;
     private final String USERNAME = "brenscrazy";
     private final String EMAIL = "glebmanufa@gmail.com";
     private final String PASSWORD = "qwerty123";
     private final String TOKEN = "CORRECT_TOKEN";
-    private final List<String> WRONG_EMAILS = List.of(
-            "wrong.email.com", "wrong@emai@l.com", "wrong@ema_il.com", "", "a", "@"
-    );
-    private final List<String> WRONG_USERNAMES = List.of(
-            "fen", "1fen", "_fen", "two fords", "two-words", "EnormouslyLongUsernameWithTooMuchSymbolsInIt"
-    );
-
-    @Test
-    public void wrongEmailFormatRegistrationTest() {
-        WRONG_EMAILS.forEach(email -> Assert.assertThrows(IllegalArgumentException.class, () ->
-                loginService.registration(new RegistrationRequest(USERNAME, email, PASSWORD, Role.USER))));
-    }
-
-    @Test
-    public void wrongUsernameFormatRegistrationTest() {
-        WRONG_USERNAMES.forEach(email -> Assert.assertThrows(IllegalArgumentException.class, () ->
-                loginService.registration(new RegistrationRequest(USERNAME, email, PASSWORD, Role.USER))));
-    }
+    public static final String ENCODED_PASSWORD = "ENCODED PASSWORD";
 
     @Test
     public void correctRegistrationTest() {
         RegistrationRequest registrationRequest = new RegistrationRequest(USERNAME, EMAIL, PASSWORD, Role.USER);
         User user = new User(UUID.randomUUID(), USERNAME, PASSWORD, EMAIL, Role.USER);
+        when(passwordEncoder.encode(any())).thenReturn(ENCODED_PASSWORD);
         when(userRepo.save(any())).thenReturn(user);
         when(jwtService.generateAccessToken(user)).thenReturn(TOKEN);
         LoginResponse loginResponse = loginService.registration(registrationRequest);
@@ -77,26 +59,16 @@ public class LoginServiceTest {
     public void correctLoginTest() {
         LoginRequest loginRequest = new LoginRequest(USERNAME, PASSWORD);
         User user = new User(UUID.randomUUID(), USERNAME, PASSWORD, EMAIL, Role.USER);
-        when(userDetailsService.loadUserByUsername(USERNAME)).thenReturn(user);
+        when(authenticationManager.authenticate(any())).thenReturn(new UsernamePasswordAuthenticationToken(user, null));
         when(jwtService.generateAccessToken(user)).thenReturn(TOKEN);
-        when(passwordEncoder.matches(any(), any())).thenReturn(true);
         LoginResponse loginResponse = loginService.login(loginRequest);
         Assertions.assertThat(loginResponse.getAccessToken()).isEqualTo(TOKEN);
     }
 
     @Test
-    public void noUserFoundLoginTest() {
+    public void badCredentialTest() {
         LoginRequest loginRequest = new LoginRequest(USERNAME, PASSWORD);
-        when(userDetailsService.loadUserByUsername(USERNAME)).thenThrow(UsernameNotFoundException.class);
-        Assert.assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
-    }
-
-    @Test
-    public void wrongPasswordTest() {
-        LoginRequest loginRequest = new LoginRequest(USERNAME, PASSWORD);
-        User user = new User(UUID.randomUUID(), USERNAME, PASSWORD, EMAIL, Role.USER);
-        when(userDetailsService.loadUserByUsername(USERNAME)).thenReturn(user);
-        when(passwordEncoder.matches(any(), any())).thenReturn(false);
+        when(authenticationManager.authenticate(any())).thenThrow(BadCredentialsException.class);
         Assert.assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
     }
 

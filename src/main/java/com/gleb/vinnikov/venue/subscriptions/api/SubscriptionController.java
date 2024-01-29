@@ -2,11 +2,13 @@ package com.gleb.vinnikov.venue.subscriptions.api;
 
 import com.gleb.vinnikov.venue.db.entities.User;
 import com.gleb.vinnikov.venue.subscriptions.services.SubscriptionService;
+import com.gleb.vinnikov.venue.users.api.UserResponsePublic;
 import com.gleb.vinnikov.venue.utils.Message;
 import com.gleb.vinnikov.venue.venues.api.VenueResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +19,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Subscriptions", description = "Methods to add/get/update/delete subscriptions")
+@Tag(name = "Subscriptions", description = "Методы для работы с подписками пользователей на заведения")
 public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
@@ -30,7 +32,9 @@ public class SubscriptionController {
                     "на это заведение."
     )
     @PostMapping(
-            value="subscribe-to-venue"
+            value="subscribe-to-venue",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Message> subscribeToVenue(
             @AuthenticationPrincipal User principal,
@@ -48,7 +52,9 @@ public class SubscriptionController {
                     "в данный момент не подписан на это заведение."
     )
     @PostMapping(
-            value="unsubscribe-from-venue"
+            value="unsubscribe-from-venue",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Message> unsubscribeFromVenue(
             @AuthenticationPrincipal User principal,
@@ -66,7 +72,9 @@ public class SubscriptionController {
                     "на это заведение."
     )
     @PostMapping(
-            value="subscribe-to-venue-by-id-name"
+            value="subscribe-to-venue-by-id-name",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Message> subscribeToVenueByIdName(
             @AuthenticationPrincipal User principal,
@@ -84,9 +92,11 @@ public class SubscriptionController {
                     "в данный момент не подписан на это заведение."
     )
     @PostMapping(
-            value="unsubscribe-from-venue-by-id-name"
+            value="unsubscribe-from-venue-by-id-name",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Message> unsubscribeFromVenue(
+    public ResponseEntity<Message> unsubscribeFromVenueByIdName(
             @AuthenticationPrincipal User principal,
             @RequestBody SubscriptionRequestByIdName request
     ) {
@@ -99,7 +109,8 @@ public class SubscriptionController {
             description = "Возвращает список заведений, на которые подписан пользователь, с нынешним JWT токеном"
     )
     @GetMapping(
-            value="get-my-subscriptions"
+            value="get-my-subscriptions",
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<List<VenueResponse>> getAuthenticatedUsersSubscriptions(
             @AuthenticationPrincipal User principal
@@ -112,9 +123,10 @@ public class SubscriptionController {
             description = "Возвращает список пользователей, которые подписаны на заведение с переданным id."
     )
     @GetMapping(
-            value="get-venue-subscribers-by-id"
+            value="get-venue-subscribers-by-id",
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<List<UserResponse>> getVenueSubscribersById(
+    public ResponseEntity<List<UserResponsePublic>> getVenueSubscribersById(
             @AuthenticationPrincipal User principal,
             @RequestParam UUID venueId
     ) {
@@ -126,9 +138,10 @@ public class SubscriptionController {
             description = "Возвращает список пользователей, которые подписаны на заведение с переданным idName."
     )
     @GetMapping(
-            value="get-venue-subscribers-by-id-name"
+            value="get-venue-subscribers-by-id-name",
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<List<UserResponse>> getVenueSubscribersById(
+    public ResponseEntity<List<UserResponsePublic>> getVenueSubscribersByIdName(
             @AuthenticationPrincipal User principal,
             @RequestParam String venueIdName
     ) {

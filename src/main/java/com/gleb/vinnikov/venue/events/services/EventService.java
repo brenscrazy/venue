@@ -8,12 +8,16 @@ import com.gleb.vinnikov.venue.db.repos.VenueRepo;
 import com.gleb.vinnikov.venue.events.api.DateFields;
 import com.gleb.vinnikov.venue.events.api.EventRequest;
 import com.gleb.vinnikov.venue.events.api.EventResponse;
+import com.gleb.vinnikov.venue.events.api.GetEventRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -36,14 +40,18 @@ public class EventService {
 
     public EventResponse getEvent(UUID eventId) {
         return eventToEventResponse(eventRepo.findById(eventId).orElseThrow(() ->
-                new IllegalArgumentException("No event with given id")));
+                new NoSuchElementException("No event with given id")));
     }
 
-    public List<EventResponse> getEventsByVenueIdName(String venueIdName) {
-        Venue venue = venueRepo.findByIdName(venueIdName).orElseThrow(() -> new IllegalArgumentException(
-                "No venue with given idName found"));
-        return eventRepo.findByTakesPlaceAt(venue).stream().map(this::eventToEventResponse)
-                .collect(Collectors.toList());
+    public List<EventResponse> getEvents(GetEventRequest request) {
+        Optional<Venue> venueOptional = Optional.ofNullable(request.getVenueIdName())
+                .map(venueIdName -> venueRepo.findByIdName(venueIdName)
+                        .orElseThrow(() -> new IllegalArgumentException("No venue with given idName found")));
+        Timestamp after = request.getAfter().toTimestamp();
+        Timestamp before = request.getBefore().toTimestamp();
+        return venueOptional.map(venue -> eventRepo.findByTakesPlaceAtAndBeforeAndAfter(venue, after, before))
+                .orElse(eventRepo.findByBeforeAndAfter(after, before))
+                .stream().map(this::eventToEventResponse).collect(Collectors.toList());
     }
 
     private EventResponse eventToEventResponse(Event event) {

@@ -2,6 +2,7 @@ package com.gleb.vinnikov.venue.subscriptions.services;
 
 import com.gleb.vinnikov.venue.db.entities.User;
 import com.gleb.vinnikov.venue.subscriptions.api.UserResponse;
+import com.gleb.vinnikov.venue.users.api.UserResponsePublic;
 import com.gleb.vinnikov.venue.utils.Message;
 import com.gleb.vinnikov.venue.venues.api.VenueResponse;
 import lombok.NonNull;
@@ -17,9 +18,9 @@ public interface SubscriptionService {
 
     List<VenueResponse> getUsersSubscriptionVenues(@NonNull User user);
 
-    List<UserResponse> getVenueSubscribersByVenueId(@NonNull UUID venueId);
+    List<UserResponsePublic> getVenueSubscribersByVenueId(@NonNull UUID venueId);
 
-    List<UserResponse> getVenueSubscribersByVenueIdName(@NonNull String venueIdName);
+    List<UserResponsePublic> getVenueSubscribersByVenueIdName(@NonNull String venueIdName);
 
     Message unsubscribeFromVenue(@NonNull UUID userId, @NonNull UUID venueId);
 

@@ -1,8 +1,6 @@
 package com.gleb.vinnikov.venue.venues.api;
 
 import com.gleb.vinnikov.venue.auth.jwt.JwtService;
-import com.gleb.vinnikov.venue.db.entities.Role;
-import com.gleb.vinnikov.venue.db.entities.User;
 import com.gleb.vinnikov.venue.utils.Utils;
 import com.gleb.vinnikov.venue.venues.services.VenueService;
 import io.jsonwebtoken.Claims;
@@ -23,12 +21,14 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.time.Duration;
 import java.util.*;
 
+import static com.gleb.vinnikov.venue.utils.Constants.*;
+import static com.gleb.vinnikov.venue.utils.Utils.initControllerTest;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureWebTestClient
+@AutoConfigureWebTestClient(timeout = "PT360S")
 public class VenueControllerTest {
 
     @Value(value = "${local.server.port}")
@@ -49,64 +49,49 @@ public class VenueControllerTest {
 
     @Before
     public void init() {
-        Claims claims = new DefaultClaims();
-        claims.setSubject("brenscrazy");
-        claims.setExpiration(new Date(System.currentTimeMillis() + 1000000));
-        when(jwtService.getClaims(any())).thenReturn(claims);
-        when(userDetailsService.loadUserByUsername(any())).thenReturn(
-                new User(UUID.randomUUID(), "brenscrazy", "qwerty123", "glebmanufa@gmail.com", Role.USER));
+        initControllerTest(jwtService, userDetailsService);
         addVenuePath = Utils.buildPath(port, "add-venue");
         getVenueByIdPath = Utils.buildPath(port, "venue-by-id");
         getVenueByIdNamePath = Utils.buildPath(port, "venue-by-id-name");
         getVenueByDisplayNamePath = Utils.buildPath(port, "venue-by-display-name");
         getVenueByNamePrefixPath = Utils.buildPath(port, "venue-by-display-name-prefix");
-        webTestClient = webTestClient.mutate()
-                .responseTimeout(Duration.ofSeconds(300))
-                .build();
     }
 
 
     @Test
     public void addVenueTest() {
-        VenueResponse venueResponse = new VenueResponse(UUID.randomUUID(), "ionoff", "IONOTEKA", "IONOTEKA");
-        when(venueService.addVenue(any(), any())).thenReturn(venueResponse);
-        addVenue(new VenueCreationData("IONOTEKA", "IONOTEKA")).expectStatus().isOk().expectBody(VenueResponse.class)
-                .isEqualTo(venueResponse);
+        when(venueService.addVenue(any(), any())).thenReturn(TEST_VENUE_RESPONSE_1);
+        addVenue(TEST_VENUE_CREATION_DATA).expectStatus().isOk().expectBody(VenueResponse.class)
+                .isEqualTo(TEST_VENUE_RESPONSE_1);
     }
 
     @Test
     public void getVenueByIdTest() {
-        VenueResponse venueResponse = new VenueResponse(UUID.randomUUID(), "ionoff", "IONOTEKA", "IONOTEKA");
         UUID id = UUID.randomUUID();
-        when(venueService.getById(id)).thenReturn(venueResponse);
-        getVenueById(id).expectStatus().isOk().expectBody(VenueResponse.class).isEqualTo(venueResponse);
+        when(venueService.getById(id)).thenReturn(TEST_VENUE_RESPONSE_1);
+        getVenueById(id).expectStatus().isOk().expectBody(VenueResponse.class).isEqualTo(TEST_VENUE_RESPONSE_1);
     }
 
     @Test
     public void getVenueByIdNameTest() {
-        VenueResponse venueResponse = new VenueResponse(UUID.randomUUID(), "ionoff", "IONOTEKA", "IONOTEKA");
-        when(venueService.getByIdName("IONOTEKA")).thenReturn(venueResponse);
-        getVenueByName("IONOTEKA").expectStatus().isOk().expectBody(VenueResponse.class).isEqualTo(venueResponse);
+        when(venueService.getByIdName(TEST_VENUE_RESPONSE_1.getIdName())).thenReturn(TEST_VENUE_RESPONSE_1);
+        getVenueByName(TEST_VENUE_RESPONSE_1.getIdName()).expectStatus().isOk().expectBody(VenueResponse.class)
+                .isEqualTo(TEST_VENUE_RESPONSE_1);
     }
 
     @Test
     public void getVenueByDisplayNameTest() {
-        List<VenueResponse> venueResponse = List.of(
-                new VenueResponse(UUID.randomUUID(), "ionoff", "a", "IONOTEKA"),
-                new VenueResponse(UUID.randomUUID(), "ionoff", "b", "IONOTEKA"));
-        when(venueService.getByDisplayName("IONOTEKA")).thenReturn(venueResponse);
-        getVenueByDisplayName("IONOTEKA").expectStatus().isOk().expectBody(
+        List<VenueResponse> venueResponse = List.of(TEST_VENUE_RESPONSE_1, TEST_VENUE_RESPONSE_2);
+        when(venueService.getByDisplayName(TEST_VENUE_RESPONSE_1.getDisplayName())).thenReturn(venueResponse);
+        getVenueByDisplayName(TEST_VENUE_RESPONSE_1.getDisplayName()).expectStatus().isOk().expectBody(
                 new ParameterizedTypeReference<List<VenueResponse>>() {}).isEqualTo(venueResponse);
     }
 
     @Test
     public void getVenueByNamePrefixTest() {
-        List<VenueResponse> venueResponse = List.of(
-                new VenueResponse(UUID.randomUUID(), "ionoff", "a", "aa"),
-                new VenueResponse(UUID.randomUUID(), "ionoff", "bb", "aa"),
-                new VenueResponse(UUID.randomUUID(), "ionoff", "ab", "IONOTEKA"));
-        when(venueService.getByNamePrefix("a")).thenReturn(venueResponse);
-        getVenueByNamePrefix("a").expectStatus().isOk().expectBody(
+        List<VenueResponse> venueResponse = List.of(TEST_VENUE_RESPONSE_1, TEST_VENUE_RESPONSE_2);
+        when(venueService.getByNamePrefix("ve")).thenReturn(venueResponse);
+        getVenueByNamePrefix("ve").expectStatus().isOk().expectBody(
                 new ParameterizedTypeReference<List<VenueResponse>>() {}).isEqualTo(venueResponse);
     }
 

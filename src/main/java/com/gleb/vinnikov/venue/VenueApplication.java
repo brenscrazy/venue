@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-public class SocialNetworkApplication {
+public class VenueApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SocialNetworkApplication.class, args);
+        SpringApplication.run(VenueApplication.class, args);
     }
 
 }

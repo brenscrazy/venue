@@ -11,10 +11,15 @@ import java.util.UUID;
 public interface VenueRepo extends JpaRepository<Venue, UUID> {
 
     Optional<Venue> findByIdName(String idName);
+
     List<Venue> findAllByDisplayNameOrderByIdName(String displayName);
-    List<Venue> findAllByDisplayNameStartingWithOrIdNameStartingWithOrderByDisplayNameAscIdNameAsc(String displayName, String idName);
+
+    List<Venue> findAllByDisplayNameStartingWithOrIdNameStartingWithOrderByDisplayNameAscIdNameAsc(String displayName,
+                                                                                                   String idName);
+
     @Query("SELECT id FROM Venue v WHERE v.idName = ?1")
     Optional<UUID> findIdByIdName(String idName);
 
+    boolean existsByIdName(String venueIdName);
 
 }
